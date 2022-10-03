@@ -50,7 +50,8 @@ An example sample is shown below:
         "questionEntity":
         [
             {
-                "entity": "Q49",
+                "name": "Q49",
+                "entityType": "entity",
                 "label": "North America",
                 "mention": "North America",
                 "span":
@@ -60,8 +61,8 @@ An example sample is shown below:
                 ]
             },
             {
-                "number": "7",
-                "type": "ordinal",
+                "name": 7,
+                "entityType": "ordinal",
                 "mention": "seventh",
                 "span":
                 [
@@ -76,7 +77,7 @@ An example sample is shown below:
             "answer":
             [
                 {
-                    "entity": "Q1153188",
+                    "name": "Q1153188",
                     "label": "Mount Lucania"
                 }
             ],
@@ -84,58 +85,51 @@ An example sample is shown below:
         },
         "category": "geography",
         "complexityType": "ordinal"
-    },
+    }
 ```
 
 A description of the fields is given below:
-* _id_: a unique ID for the given sample
-* _question_: the original question elicited in English
-* _translations_: the translations of the English question into the following languages:
-  * _ar_: Arabic (Saudi Arabia)
-  * _de_: German (Germany)
-  * _ja_: Japanese (Japan)
-  * _hi_: Hindi (India)
-  * _pt_: Portuguese (Brazil)
-  * _es_: Spanish (Mexico)
-  * _it_: Italian (Italy)
-  * _fr_: French (France)
-* _questionEntity_: a list of annotated question entities identified by crowd workers. 
-There are two types: entities and numbers
+* `id`: a unique ID for the given sample
+* `question`: the original question elicited in English
+* `translations`: the translations of the English question into the following languages:
+  * `ar`: Arabic (Saudi Arabia)
+  * `de`: German (Germany)
+  * `ja`: Japanese (Japan)
+  * `hi`: Hindi (India)
+  * `pt`: Portuguese (Brazil)
+  * `es`: Spanish (Mexico)
+  * `it`: Italian (Italy)
+  * `fr`: French (France)
+* `questionEntity`: a list of annotated question entities identified by crowd workers.
 ```
 {
-     "entity": The Wikidata Q-code of the entity
-     "label": The label of the Wikidata Q-code
+     "name": The Wikidata Q-code or numerical value of the entity
+     "entityType": The type of the entity. Options are:
+             entity, cardinal, ordinal, date, time, percent, quantity, or money
+     "label": [optional] The label of the Wikidata Q-code
      "mention": The entity as it appears in the English question text
-     "span": The start and end characters of the mention in the English question text
-}
-
-{
-     "number": A numerical value
-     "type": The type of the numerical value. Options are:
-             cardinal, ordinal, date, time, percent, quantity, or money
-     "mention": The number as it appears in the English question text
      "span": The start and end characters of the mention in the English question text
 }
 ```
   
-* _answer_: the answer as annotated by crowd workers
+* `answer`: the answer as annotated by crowd workers
 ```
 {
      "answerType": The type of the answer. Options are:
                    entity, boolean, number, date, or string
      "answer": A list of annotated answers. For entities, this will include:
-               {"entity": Wikidata Q-code, "label": label of the Wikidata Q-code}
+               {"name": Wikidata Q-code, "label": label of the Wikidata Q-code}
      "mention": The original answer text elicited in English
      "answerNum": [optional] For superlative and count questions, crowd workers
                   provided an additional numerical value to answer the question
 }
 ```
-* _category_: the category of the question. Options are:
- _geography_, _movies_, _history_, _books_,_politics_,_music_,
- _videogames_, or _sports_
-* _complexityType_: the complexity type of the question. Options are:
- _ordinal_, _intersection_, _count_, _superlative_, _yesno_
-_comparative_, _multihop_, _difference_, _generic_
+* `category`: the category of the question. Options are:
+ `geography`, `movies`, `history`, `books`, `politics`, `music`,
+ `videogames`, or `sports`
+* `complexityType`: the complexity type of the question. Options are:
+`ordinal`, `intersection`, `count`, `superlative`, `yesno`
+`comparative`, `multihop`, `difference`, or `generic`
 
 
 ## License
