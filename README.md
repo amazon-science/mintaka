@@ -3,7 +3,7 @@
 ## Introduction
 Mintaka is a complex, natural, and multilingual question answering (QA) dataset composed of 20,000 question-answer 
 pairs elicited from MTurk workers and annotated with Wikidata question and answer entities.
-Full details on the Mintaka dataset can be found in our paper: [link to COLING 2022 paper coming soon!]
+Full details on the Mintaka dataset can be found in our paper: [https://arxiv.org/abs/2210.01613](https://arxiv.org/abs/2210.01613)
 
 To build Mintaka, we explicitly collected questions in 8 complexity types, as well as generic questions:
 * **Count** (e.g., Q: How many astronauts have been elected to Congress? A: 4)
