@@ -3,7 +3,7 @@
 ## Introduction
 Mintaka is a complex, natural, and multilingual question answering (QA) dataset composed of 20,000 question-answer 
 pairs elicited from MTurk workers and annotated with Wikidata question and answer entities.
-Full details on the Mintaka dataset can be found in our paper: [https://arxiv.org/abs/2210.01613](https://arxiv.org/abs/2210.01613)
+Full details on the Mintaka dataset can be found in our paper: [https://aclanthology.org/2022.coling-1.138/](https://aclanthology.org/2022.coling-1.138/)
 
 To build Mintaka, we explicitly collected questions in 8 complexity types, as well as generic questions:
 * **Count** (e.g., Q: How many astronauts have been elected to Congress? A: 4)
@@ -140,6 +140,18 @@ This project is licensed under the CC-BY-4.0 License.
 
 If you use this dataset, please cite the following paper:
 ```
-citation coming soon!
+@inproceedings{sen-etal-2022-mintaka,
+    title = "Mintaka: A Complex, Natural, and Multilingual Dataset for End-to-End Question Answering",
+    author = "Sen, Priyanka  and
+      Aji, Alham Fikri  and
+      Saffari, Amir",
+    booktitle = "Proceedings of the 29th International Conference on Computational Linguistics",
+    month = oct,
+    year = "2022",
+    address = "Gyeongju, Republic of Korea",
+    publisher = "International Committee on Computational Linguistics",
+    url = "https://aclanthology.org/2022.coling-1.138",
+    pages = "1604--1619"
+}
 ```
 
