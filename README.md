@@ -26,6 +26,14 @@ translated into 8 additional languages:
 Mintaka is one of the first large-scale complex, natural, and multilingual datasets
 that can be used for end-to-end question-answering models.
 
+### What's new
+
+* **October 25, 2022**: 
+  * Evaluation script is now available! See the [Evaluation](#evaluation) section below.
+  * Answer entities now come with Wikidata labels in all languages when available.
+  * Superlative and Count questions are reformatted with a `supportingNum` or `supportingEnt`
+    field when a supporting number or entity was provided by the annotator.
+
 ## Dataset
 
 In this repo, we provide our randomly split train (14,000 samples), 
@@ -78,7 +86,18 @@ An example sample is shown below:
             [
                 {
                     "name": "Q1153188",
-                    "label": "Mount Lucania"
+                    "label":
+                    {
+                        "en": "Mount Lucania",
+                        "ar": null,
+                        "de": "Mount Lucania",
+                        "es": "Monte Lucania",
+                        "fr": "mont Lucania",
+                        "hi": null,
+                        "it": "Monte Lucania",
+                        "ja": "ルカニア山",
+                        "pt": "Monte Lucania"
+                    }
                 }
             ],
             "mention": "Mount Lucania"
@@ -118,10 +137,12 @@ A description of the fields is given below:
      "answerType": The type of the answer. Options are:
                    entity, boolean, number, date, or string
      "answer": A list of annotated answers. For entities, this will include:
-               {"name": Wikidata Q-code, "label": label of the Wikidata Q-code}
+               {"name": Wikidata Q-code, "label": {multilingual labels of the entity from Wikidata}}
      "mention": The original answer text elicited in English
-     "answerNum": [optional] For superlative and count questions, crowd workers
-                  provided an additional numerical value to answer the question
+     "supportingEnt": [optional] For count and superlative questions, crowd workers
+                  could provide additional entities to support the answer
+     "supportingNum": [optional] For superlative questions, crowd workers
+                  could provide additional numeric values to support the answer
 }
 ```
 * `category`: the category of the question. Options are:
@@ -130,6 +151,78 @@ A description of the fields is given below:
 * `complexityType`: the complexity type of the question. Options are:
 `ordinal`, `intersection`, `count`, `superlative`, `yesno`
 `comparative`, `multihop`, `difference`, or `generic`
+
+
+## Evaluation
+
+We have created an evaluation script to help score predictions on
+the Mintaka test set. This script expects results in a JSON file with the
+question ID as the key and the answer as the value. 
+
+Predictions for text evaluation should be strings, such as:
+
+```
+{
+    "fae46b21": "Mark Twain",
+    "bc8713cc": "1",
+    "d2a03f72": "Drake",
+    "9a296167": "5",
+    "e343ad26": "False",
+    "b41ae115": "Elvis Presto",
+    "4367c74a": "X-Men X2 X-Men: The Last Stand",
+    ...
+}
+```
+
+and predictions for KG evaluation can be strings, integers, floats, 
+booleans, or lists, such as:
+```
+{
+    "fae46b21": "Q7245",
+    "bc8713cc": 1,
+    "d2a03f72": "Q33240",
+    "9a296167": 5,
+    "e343ad26": false,
+    "b41ae115": null,
+    "4367c74a":
+    [
+        "Q106182",
+        "Q219776",
+        "Q221168"
+    ],
+    ...
+}
+```
+
+You can run the evaluation script as:
+
+```
+python evaluate/evaluate.py \
+  --mode [text or kg] \
+  --path_to_test_file [default is data/mintaka_test.json]
+  --path_to_predictions [path to prediction file] \
+  --lang [language of evaluation]
+```
+
+Below is an example for KG evaluation:
+```
+python evaluate/evaluate.py \
+  --mode kg \
+  --path_to_predictions evaluate/examples/example_kg_predictions.json
+```
+
+and for text evaluation:
+```
+python evaluate/evaluate.py \
+  --mode text \
+  --path_to_predictions evaluate/examples/example_text_predictions.json \
+  --lang en
+```
+
+The evaluation script returns:
+* **Exact Match**: The percent of questions where the prediction exactly matches the labeled answer. For text answers, this is based on the answer scoring in [DPR](https://github.com/facebookresearch/DPR/blob/main/dpr/data/qa_validation.py#L175).
+* **F1**: An F1 score calculated as the shared words or entities between the prediction and labeled answer (based on the [SQuAD 2.0 eval script](https://worksheets.codalab.org/rest/bundles/0x6b567e1cf2e041ec80d7098f031c5c9e/contents/blob/)).
+* **Hits@1**: A hits@1 score checking if at least one Top 1 prediction matches a labeled answer (based on the hits@K scoring in [EmbedKGQA](https://github.com/malllabiisc/EmbedKGQA/blob/master/KGQA/RoBERTa/main.py#L154))
 
 
 ## License
